@@ -1,13 +1,18 @@
 package com.mondal.mondal_shop.service.product;
 
+import com.mondal.mondal_shop.dto.ImageDto;
+import com.mondal.mondal_shop.dto.ProductDto;
 import com.mondal.mondal_shop.exception.ProductNotFoundException;
 import com.mondal.mondal_shop.model.Category;
+import com.mondal.mondal_shop.model.Image;
 import com.mondal.mondal_shop.model.Product;
 import com.mondal.mondal_shop.repository.CategoryRepository;
+import com.mondal.mondal_shop.repository.ImageRepository;
 import com.mondal.mondal_shop.repository.ProductRepository;
 import com.mondal.mondal_shop.request.AddProductRequest;
 import com.mondal.mondal_shop.request.ProductUpdateRequest;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +23,8 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
+    private final ImageRepository imageRepository;
     @Override
     public Product addProduct(AddProductRequest request) {
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
@@ -102,5 +109,14 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand,name);
+    }
+    public ProductDto convertToDto(Product product){
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
 }
