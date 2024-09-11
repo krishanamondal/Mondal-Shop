@@ -1,5 +1,6 @@
 package com.mondal.mondal_shop.service.product;
 
+import com.mondal.mondal_shop.dto.ProductDto;
 import com.mondal.mondal_shop.model.Product;
 import com.mondal.mondal_shop.request.AddProductRequest;
 import com.mondal.mondal_shop.request.ProductUpdateRequest;
@@ -22,4 +23,7 @@ public interface ProductService {
     Long countProductsByBrandAndName(String brand, String name);
 
 
+    List<ProductDto> getConvertedProduct(List<Product> products);
+
+    ProductDto convertToDto(Product product);
 }

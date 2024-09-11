@@ -110,6 +110,11 @@ public class ProductServiceImpl implements ProductService{
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand,name);
     }
+    @Override
+    public List<ProductDto> getConvertedProduct(List<Product> products){
+        return products.stream().map(this::convertToDto).toList();
+    }
+    @Override
     public ProductDto convertToDto(Product product){
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
         List<Image> images = imageRepository.findByProductId(product.getId());
