@@ -7,4 +7,6 @@ public interface CartItemService {
     void addCartItem(Long cartId,Long productId,int quantity);
     void removeItemFormCart(Long cartId,Long productId);
     void updateItemQuantity(Long cartId,Long productId,int quantity);
+
+    CartItem getCartItem(Long cartId, Long productId);
 }
