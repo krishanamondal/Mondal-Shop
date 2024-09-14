@@ -7,6 +7,7 @@ import com.mondal.mondal_shop.repository.CartItemRepository;
 import com.mondal.mondal_shop.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,7 +27,7 @@ public class CartServiceImpl implements CartService{
         cart.setTotalAmount(totalAmount);
         return cartRepository.save(cart);
     }
-
+    @Transactional
     @Override
     public void clearCart(Long id) {
     Cart cart = getCart(id);
