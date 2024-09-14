@@ -23,13 +23,19 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public void addCartItem(Long cartId, Long productId, int quantity) {
-//    1 get the cart
-//    2 get the product
-//    3 check if the product already in the cart
+
+
 //    4 if yes then increase the quantity with the requested quantity
 //     5 if no the initiate a new  cartItem entry.
+
+        //    1 get the cart
         Cart cart = cartService.getCart(cartId);
+
+        //    2 get the product
         Product product = productService.getProductById(productId);
+
+        //    3 check if the product already in the cart
+
         CartItem cartItem = cart.getItems()
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
@@ -69,7 +75,11 @@ public class CartItemServiceImpl implements CartItemService {
                     item.setUnitPrise(item.getProduct().getPrise());
                     item.setTotalPrise();
                 });
-        BigDecimal totalAmount = cart.getTotalAmount();
+        BigDecimal totalAmount = cart.getItems()
+                .stream()
+                .map(CartItem ::getTotalPrise)
+                .reduce(BigDecimal.ZERO,BigDecimal::add);
+
         cart.setTotalAmount(totalAmount);
         cartRepository.save(cart);
     }
