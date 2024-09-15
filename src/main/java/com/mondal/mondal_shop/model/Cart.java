@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,13 +24,9 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItem> items = new HashSet<>();
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-
-
-
-
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
     public void addItem(CartItem item) {
@@ -48,12 +45,11 @@ public class Cart {
         this.totalAmount = items.stream().map(item -> {
             BigDecimal unitPrice = item.getUnitPrise();
             if (unitPrice == null) {
-                return  BigDecimal.ZERO;
+                return BigDecimal.ZERO;
             }
             return unitPrice.multiply(BigDecimal.valueOf(item.getQuantity()));
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
-
 
 
 }
