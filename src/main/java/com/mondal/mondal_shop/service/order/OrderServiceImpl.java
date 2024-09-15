@@ -1,5 +1,6 @@
 package com.mondal.mondal_shop.service.order;
 
+import com.mondal.mondal_shop.dto.OrderDto;
 import com.mondal.mondal_shop.enums.OrderStatus;
 import com.mondal.mondal_shop.exception.ResourceNotFoundException;
 import com.mondal.mondal_shop.model.Cart;
@@ -10,6 +11,7 @@ import com.mondal.mondal_shop.repository.OrderRepository;
 import com.mondal.mondal_shop.repository.ProductRepository;
 import com.mondal.mondal_shop.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     private ProductRepository productRepository;
     private CartService cartService;
+    private final ModelMapper modelMapper;
     @Transactional
     @Override
     public Order placeOrder(Long userId) {
@@ -69,12 +72,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrder(Long orderId) {
+    public OrderDto getOrder(Long orderId) {
         return orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("order not found"));
+                .map(this::convertToDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Order Not found"));
     }
     @Override
-    public List<Order> getUserOrders(Long userId){
-        return orderRepository.findByUserId(userId);
+    public List<OrderDto> getUserOrders(Long userId){
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders.stream().map(this::convertToDto).toList();
+    }
+    private OrderDto convertToDto(Order order){
+        return modelMapper.map(order, OrderDto.class);
     }
 }
