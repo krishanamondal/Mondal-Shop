@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class OrderItemsDto {
     private Long productId;
     private String productName;
+    private String productBrand;
     private int quantity;
     private BigDecimal prise;
 }

@@ -37,7 +37,7 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public BigDecimal getTotalPrise(Long id) {
+    public BigDecimal getTotalPrice(Long id) {
         Cart cart = getCart(id);
         return cart.getItems()
                 .stream()

@@ -40,7 +40,7 @@ public class CartController {
     @GetMapping("{cartId}/cart/total-prise")
     public ResponseEntity<ApiResponse> getTotalAmount(@PathVariable Long cartId){
         try {
-            BigDecimal totalPrise = cartService.getTotalPrise(cartId);
+            BigDecimal totalPrise = cartService.getTotalPrice(cartId);
             return ResponseEntity.ok(new ApiResponse("Total Prise ",totalPrise));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));

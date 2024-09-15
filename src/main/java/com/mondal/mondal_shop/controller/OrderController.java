@@ -14,16 +14,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/${api.prefix}/orders")
+@RequestMapping("${api.prefix}/orders")
 public class OrderController {
     private final OrderService orderService;
     @PostMapping("/order")
-    public ResponseEntity<ApiResponse> createOrder(@RequestParam Long userId){
+    public ResponseEntity<ApiResponse> createOrder(@RequestParam Long userId) {
         try {
-            Order order = orderService.placeOrder(userId);
-            return ResponseEntity.ok(new ApiResponse("Order Success",order));
+//            Order order =  orderService.placeOrder(userId);
+            OrderDto orderDto = orderService.convertToDto(orderService.placeOrder(userId));
+            return ResponseEntity.ok(new ApiResponse("Item Order Success!", orderDto));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("error order occured",e.getMessage()));
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error Occured!", e.getMessage()));
         }
     }
     @GetMapping("/{orderId}/order")

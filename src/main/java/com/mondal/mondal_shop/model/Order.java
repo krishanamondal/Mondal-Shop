@@ -22,7 +22,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
     private LocalDate orderDate;
-    private BigDecimal orderTotalAmount;
+    private BigDecimal totalAmount;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)
