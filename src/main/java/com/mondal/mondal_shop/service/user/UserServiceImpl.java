@@ -1,5 +1,6 @@
 package com.mondal.mondal_shop.service.user;
 
+import com.mondal.mondal_shop.dto.UserDto;
 import com.mondal.mondal_shop.exception.AlreadyExistsException;
 import com.mondal.mondal_shop.exception.ResourceNotFoundException;
 import com.mondal.mondal_shop.model.User;
@@ -7,6 +8,7 @@ import com.mondal.mondal_shop.repository.UserRepository;
 import com.mondal.mondal_shop.request.CreateUserRequest;
 import com.mondal.mondal_shop.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
     @Override
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
@@ -53,6 +56,10 @@ public class UserServiceImpl implements UserService{
             throw new ResourceNotFoundException("User not found");
         });
 
+    }
+    @Override
+    public UserDto convertUserToDto(User user){
+        return modelMapper.map(user, UserDto.class);
     }
 }
 //5:55
