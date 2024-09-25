@@ -5,9 +5,11 @@ import com.mondal.mondal_shop.exception.ResourceNotFoundException;
 import com.mondal.mondal_shop.model.Cart;
 import com.mondal.mondal_shop.model.CartItem;
 import com.mondal.mondal_shop.model.Product;
+import com.mondal.mondal_shop.model.User;
 import com.mondal.mondal_shop.repository.CartItemRepository;
 import com.mondal.mondal_shop.repository.CartRepository;
 import com.mondal.mondal_shop.service.product.ProductService;
+import com.mondal.mondal_shop.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,10 @@ public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepository;
     private final ProductService productService;
     private final CartService cartService;
+    private final UserService userService;
 
     @Override
-    public void addCartItem(Long cartId, Long productId, int quantity) {
+    public void addCartItem(Long cartId,Long productId, int quantity) {
 
 
 //    4 if yes then increase the quantity with the requested quantity
@@ -53,7 +56,10 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemRepository.save(cartItem);
         cartRepository.save(cart);
 
+
     }
+
+
 
     @Override
     public void removeItemFormCart(Long cartId, Long productId) {

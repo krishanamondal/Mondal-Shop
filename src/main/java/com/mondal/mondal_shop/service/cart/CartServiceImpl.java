@@ -3,6 +3,7 @@ package com.mondal.mondal_shop.service.cart;
 import com.mondal.mondal_shop.exception.ResourceNotFoundException;
 import com.mondal.mondal_shop.model.Cart;
 import com.mondal.mondal_shop.model.CartItem;
+import com.mondal.mondal_shop.model.User;
 import com.mondal.mondal_shop.repository.CartItemRepository;
 import com.mondal.mondal_shop.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,11 +46,15 @@ public class CartServiceImpl implements CartService{
                 .reduce(BigDecimal.ZERO,BigDecimal::add);
     }
     @Override
-    public Long initializeNewCart(){
-        Cart newCart = new Cart();
-        Long newCartId = cartIdGenerator.incrementAndGet();
-        newCart.setId(newCartId);
-        return cartRepository.save(newCart).getId();
+    public Long initializeNewCart(User user){
+
+            Cart newCart = new Cart();
+            Long newCartId = cartIdGenerator.incrementAndGet();
+            newCart.setId(newCartId);
+            newCart.setUser(user);
+       return cartRepository.save(newCart).getId();
+
+
     }
 
     @Override

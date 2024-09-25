@@ -1,6 +1,7 @@
 package com.mondal.mondal_shop.controller;
 
 import com.mondal.mondal_shop.dto.ProductDto;
+import com.mondal.mondal_shop.exception.AlreadyExistsException;
 import com.mondal.mondal_shop.exception.ResourceNotFoundException;
 import com.mondal.mondal_shop.model.Product;
 import com.mondal.mondal_shop.request.AddProductRequest;
@@ -13,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -45,8 +45,8 @@ public class ProductController {
         try {
             Product theProduct = productService.addProduct(product);
             return ResponseEntity.ok(new ApiResponse("add product success",theProduct));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
+        } catch (AlreadyExistsException e) {
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(),null));
         }
     }
     @PutMapping("/update/{productId}")

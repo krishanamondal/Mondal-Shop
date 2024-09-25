@@ -10,5 +10,5 @@ public class OrderItemsDto {
     private String productName;
     private String productBrand;
     private int quantity;
-    private BigDecimal prise;
+    private BigDecimal unitPrise;
 }

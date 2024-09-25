@@ -2,6 +2,7 @@ package com.mondal.mondal_shop.service.product;
 
 import com.mondal.mondal_shop.dto.ImageDto;
 import com.mondal.mondal_shop.dto.ProductDto;
+import com.mondal.mondal_shop.exception.AlreadyExistsException;
 import com.mondal.mondal_shop.exception.ProductNotFoundException;
 import com.mondal.mondal_shop.model.Category;
 import com.mondal.mondal_shop.model.Image;
@@ -27,6 +28,9 @@ public class ProductServiceImpl implements ProductService{
     private final ImageRepository imageRepository;
     @Override
     public Product addProduct(AddProductRequest request) {
+        if (existsProduct(request.getName(), request.getBrand())){
+            throw new AlreadyExistsException( request.getName()+" " +request.getBrand()+ " product has been exists, you may update now");
+        }
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() ->{
                     Category newCategory = new Category(request.getCategory().getName());
@@ -35,7 +39,9 @@ public class ProductServiceImpl implements ProductService{
         request.setCategory(category);
         return productRepository.save(createProduct(request,category));
     }
-
+    private boolean existsProduct(String name, String brand){
+        return productRepository.existsByNameAndBrand(name,brand);
+    }
     public Product createProduct(AddProductRequest request, Category category){
         return new Product(
                 request.getName(),

@@ -16,7 +16,7 @@ public class OrderItems {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int quantity;
-    private BigDecimal prise;
+    private BigDecimal unitPrise;
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
@@ -28,7 +28,7 @@ public class OrderItems {
         this.order = order;
         this.product = product;
         this.quantity = quantity;
-        this.prise = prise;
+        this.unitPrise = prise;
 
     }
 }

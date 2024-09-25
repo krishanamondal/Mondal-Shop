@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
     private BigDecimal calculateTotalAmount(List<OrderItems> orderItemList) {
         return  orderItemList
                 .stream()
-                .map(item -> item.getPrise()
+                .map(item -> item.getUnitPrise()
                         .multiply(new BigDecimal(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
